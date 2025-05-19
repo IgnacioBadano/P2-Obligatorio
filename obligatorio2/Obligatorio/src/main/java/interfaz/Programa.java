@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  *
- * @author joses y ignacio
+ * @author Josefina Sucunza (258389) y Ignacio Badano (320966)
  */
 public class Programa {
 

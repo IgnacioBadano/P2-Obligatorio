@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author joses y ignacio
+ * @author Josefina Sucunza (258389) y Ignacio Badano (320966)
  */
 public class Juego {
 
@@ -27,8 +27,7 @@ public class Juego {
     private int cantidadBandaBlanco;
     private int cantidadBandaNegra;
     private boolean turnoBlanco;
-    private ArrayList<String> historialBlanco;
-    private ArrayList<String> historialNegro;
+    private ArrayList<String> historial; // Nuevo
 
     public Juego(Jugador blanco, Jugador negro) {
         this.blanco = blanco;
@@ -39,8 +38,7 @@ public class Juego {
         tablero = new Tablero(largoBanda);
         triangulosGanadosBlanco = 0;
         triangulosGanadosNegro = 0;
-        historialBlanco = new ArrayList<>();
-        historialNegro = new ArrayList<>();
+        historial = new ArrayList<>();
         ganador=null;
     }
 
@@ -156,25 +154,10 @@ public class Juego {
         this.cantidadTablero = cantidadTablero;
     }
 
-    public ArrayList<String> getHistorialBlanco() {
-        return historialBlanco;
+    public ArrayList<String> getHistorial() {
+        return historial;
     }
     
-    public ArrayList<String> getHistorialNegro() {
-        return historialNegro;
-    }
-    
-    public void setHistorialBlanco(ArrayList<String> historialBlanco) {
-        this.historialBlanco = historialBlanco;
-    }
-
-    public void setHistorialNegro(ArrayList<String> historialNegro) {
-        this.historialNegro = historialNegro;
-    }
-    
-    
-    
-
     public void cambiarTurno() {
         turnoBlanco = !turnoBlanco;
     }
@@ -182,16 +165,10 @@ public class Juego {
     public String mover(Coordenada coordenada) {
         if (tablero.coordenadaValida(coordenada.getFilaOrigen(), coordenada.getColumnaOrigen())) {
             // Nuevo
-            if (cualquierLugar || (historialBlanco.size() == 0 || (tablero.existeElastico(coordenada.getFilaOrigen(), coordenada.getColumnaOrigen())))) {
+            if (cualquierLugar || (historial.size() == 0 || (tablero.existeElastico(coordenada.getFilaOrigen(), coordenada.getColumnaOrigen())))) {
                 if (suficienteBandas(coordenada.getCuantas())) {
                     // Nuevo
-                    if(turnoBlanco) {
-                        historialBlanco.add(coordenada.getCoordenada());
-                    }
-                    else {
-                        historialNegro.add(coordenada.getCoordenada());
-                    }
-                    
+                    historial.add(coordenada.getCoordenada());
                     String respuesta = tablero.mover(coordenada);
                     if (respuesta.equals("")) {
                         if (tablero.esTriangulo(coordenada)) {
@@ -304,4 +281,4 @@ public class Juego {
     public boolean continuar() {
         return cantidadBandaBlanco!=0 && cantidadBandaNegra!=0;
     }
-} 
+}

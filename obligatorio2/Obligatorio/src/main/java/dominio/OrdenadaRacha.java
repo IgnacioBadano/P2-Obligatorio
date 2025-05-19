@@ -6,7 +6,7 @@ package dominio;
 
 /**
  *
- * @author joses y ignacio
+ * @author Josefina Sucunza (258389) y Ignacio Badano (320966)
  */
 public class OrdenadaRacha {
     

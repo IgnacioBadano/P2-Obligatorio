@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author joses y ignacio
+ * @author Josefina Sucunza (258389) y Ignacio Badano (320966)
  */
 public class Interfaz {
 
@@ -36,10 +36,10 @@ public class Interfaz {
     public static void agregarJugador(Sistema modelo) {
         System.out.println("Registrar jugador");
         System.out.print("Ingrese su nombre: ");
-
         String nombre = teclado.nextLine();
         System.out.print("Ingrese su edad : ");
         int edad = teclado.nextInt();
+        teclado.nextLine();
         if (nombre.isBlank()) {
             System.out.println("El nombre es obligatorio");
         } else {
@@ -302,9 +302,68 @@ public class Interfaz {
         return jugadores.get(opcion - 1);
     }
 
+    // MODIFICADO: Historial único de movimientos y tableros en paralelo
     private static void mostrarHistorial(Juego juego) {
-        System.out.println("Movimientos " + juego.getBlanco().getNombre() + ": " + juego.getHistorialBlanco());
-        System.out.println("Movimientos " + juego.getNegro().getNombre() + ": " + juego.getHistorialNegro());
+        System.out.println("Historial de movimientos: " + juego.getHistorial());
+
+        if (juego.getHistorial().isEmpty()) return;
+
+        // Lista de tableros tras cada jugada
+        ArrayList<Tablero> tableros = new ArrayList<>();
+
+        for (int i = 0; i < juego.getHistorial().size(); i++) {
+            Tablero tableroTemp = new Tablero(Juego.getLargoBanda());
+            for (int j = 0; j <= i; j++) {
+                Coordenada c = new Coordenada(juego.getHistorial().get(j));
+                tableroTemp.mover(c);
+            }
+            tableros.add(tableroTemp);
+        }
+
+        imprimirTablerosLadoALado(tableros);
+    }
+
+    // Imprime todos los tableros uno al lado del otro, con el mismo formato de mostrar()
+    private static void imprimirTablerosLadoALado(ArrayList<Tablero> tableros) {
+        // Encabezados
+        for (int t = 0; t < tableros.size(); t++) {
+            System.out.print("A B C D E F G H I J K L M   ");
+        }
+        System.out.println();
+
+        // Para cada fila
+        for (int fila = 0; fila < 7; fila++) {
+            // Linea de las horizontales en paralelo
+            for (int t = 0; t < tableros.size(); t++) {
+                Tablero tablero = tableros.get(t);
+                for (int columna = 0; columna < 13; columna++) {
+                    lineaHorizontal(tablero, fila, columna);
+                }
+                System.out.print("   ");
+            }
+            System.out.println();
+            // Lineas diagonales en paralelo
+            for (int t = 0; t < tableros.size(); t++) {
+                Tablero tablero = tableros.get(t);
+                for (int columna = 0; columna < 13; columna++) {
+                    if (tablero.getMatriz()[fila][columna] == 'E') {
+                        if (columna + 1 < 13 && fila + 1 < 7 && tablero.getMatriz()[fila + 1][columna + 1] == 'E') {
+                            System.out.print(" \\ ");
+                        } else {
+                            System.out.print("  ");
+                        }
+                    } else {
+                        if ((columna + 1) < 13 && (fila + 1) < 7 && tablero.getMatriz()[fila + 1][columna] == 'E' && tablero.getMatriz()[fila][columna + 1] == 'E') {
+                            System.out.print(" /");
+                        } else {
+                            System.out.print("  ");
+                        }
+                    }
+                }
+                System.out.print("   ");
+            }
+            System.out.println();
+        }
     }
 
     public static void fuegosArtificiales() {
